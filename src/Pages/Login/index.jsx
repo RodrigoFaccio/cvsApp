@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
+
 
 import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
 
@@ -7,6 +9,8 @@ import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+  const navigation = useNavigation();
 
   return (
     <View style={ styles.container }>
@@ -27,7 +31,7 @@ function Login() {
       onChangeText={senha => setSenha(senha)}
       defaultValue={senha}
     />
-    <TouchableOpacity style={styles.buttonLogin}>
+    <TouchableOpacity style={styles.buttonLogin} onPress={()=>{navigation.navigate('Main')}}>
       <Text style={styles.textButton}>Login</Text>
     </TouchableOpacity>
 
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
     
   },
   buttonLogin:{
-    backgroundColor:'#00BFFF',
+    backgroundColor:'#3A7BCD',
     justifyContent:'center',
     alignItems:'center',
     width:200,
