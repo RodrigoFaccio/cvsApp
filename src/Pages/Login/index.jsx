@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import api from '../../services/api'
 
 
 import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
@@ -7,10 +8,29 @@ import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native
 
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('admin');
+  const [senha, setSenha] = useState('rio@2021');
 
   const navigation = useNavigation();
+
+
+  async function submit(){
+
+    //Envio das informacoes para a api 
+    const params = new URLSearchParams();
+    params.append('acao', 'login');
+    params.append('usr_login', email);
+    params.append('usr_senha', senha);
+    const {data} = await api.post('/login.php',params);
+    
+    
+
+   
+
+    //console.log(data)
+
+
+  }
 
   return (
     <View style={ styles.container }>
@@ -31,7 +51,7 @@ function Login() {
       onChangeText={senha => setSenha(senha)}
       defaultValue={senha}
     />
-    <TouchableOpacity style={styles.buttonLogin} onPress={()=>{navigation.navigate('Main')}}>
+    <TouchableOpacity style={styles.buttonLogin} onPress={submit}>
       <Text style={styles.textButton}>Login</Text>
     </TouchableOpacity>
 
