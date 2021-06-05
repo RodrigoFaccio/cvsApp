@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useNavigation } from '@react-navigation/core';
 
 
 import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import AuthContext, { AuthProvider } from '../../context/auth';
+
 
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../../Components/Button';
@@ -13,6 +15,8 @@ import Button from '../../Components/Button';
 
 function Main() {
   const navigation = useNavigation();
+  const { signed, user,signIn,signOut } = useContext(AuthContext);
+
 
     async function entrada(){
         navigation.navigate('Entrada');
@@ -32,6 +36,11 @@ function Main() {
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button,{backgroundColor:'#586E8A'}]} onPress={()=>{navigation.navigate('Transferencia')}}>
           <Text style={{color:'white',fontSize:20}}>Transferencia  <MaterialCommunityIcons name="cog-transfer" size={24} color="black" /></Text>
+         
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.button,{backgroundColor:'#586E8A'}]} onPress={()=>{signOut()}}>
+          <Text style={{color:'white',fontSize:20}}>Sair  <MaterialCommunityIcons name="cog-transfer" size={24} color="black" /></Text>
          
       </TouchableOpacity>
         

@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useNavigation } from '@react-navigation/core';
-import api from '../../services/api'
 
 
 import { View, Text, StyleSheet,TextInput, TouchableOpacity } from 'react-native';
+
+import api from '../../services/api';
+import AuthContext, { AuthProvider } from '../../context/auth';
+
 
 
 
 function Login() {
   const [email, setEmail] = useState('admin');
   const [senha, setSenha] = useState('rio@2021');
+  const [errorMsg,setErrorMsg] = useState('');
 
   const navigation = useNavigation();
+  const { signed, user,signIn } = useContext(AuthContext);
+  console.log(user)
+
+
 
 
   async function submit(){
@@ -21,13 +29,29 @@ function Login() {
     params.append('acao', 'login');
     params.append('usr_login', email);
     params.append('usr_senha', senha);
-    const {data} = await api.post('/login.php',params);
+
+    try{
+      const {data} = await api.post('/login.php',params);
+      console.log(data.error_msg)
+      if(data.error_msg)
+        return setErrorMsg('Usuário ou senha incorretos ')
+
+      signIn({
+        usr_login:data.usr_login,
+        usr_id:data.usr_id
+      })  
+      
+
+
+    }catch(err){
+      console.log(err);
+    }
+
     
     
 
    
 
-    //console.log(data)
 
 
   }
@@ -39,6 +63,8 @@ function Login() {
       </View>
       <Text style={styles.title}>Login</Text>
       <Text style={styles.subTitle}>Entre com o seus dados </Text>
+
+      <Text style={{color:'red',fontSize:15}}>{errorMsg}</Text>
       <TextInput
         style={styles.input}
         placeholder="E-mail"
